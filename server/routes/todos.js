@@ -1,14 +1,16 @@
-const express = require('express'),
-      router = express.Router(),
-      { create, show, update, remove } = require('../controller/todos');
-      
+const express = require("express"),
+  router = express.Router(),
+  { create, show, update, remove, complete } = require("../controller/todos");
+
 router
-    .get('/list', show)
+  .get("/list", show)
 
-    .post('/list', create)
+  .post("/list", create)
 
-    .put('/:id', update)
+  .put("/list", complete)
 
-    .delete('/:id', remove)
+  .put("/:id", update)
+
+  .delete("/:id", remove);
 
 module.exports = router;

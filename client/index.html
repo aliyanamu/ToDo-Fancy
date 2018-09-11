@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -10,19 +11,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <title>Todo List v1</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="wrapper">
 
         <div id="app-container">
             <h1>jQuery ToDo App</h1>
-            <form id="create-form" method="post">
+            <form id="create-form">
                 <ul style="list-style: none; text-align: center;">
-                    <li>I need to do <input class="create-input" type="text" id="title" name="title" placeholder="task"/></li>
-                    <li>with details <input class="create-input" type="text" id="desc" name="desc" placeholder="description"/></li>
-                    <li>due date at <input class="create-input" id="dueDate" name="dueDate" placeholder="pick date in calendar" readonly required/></li>
+                    <li>I need to do <input class="create-input" type="text" id="title" name="title" placeholder="task" /></li>
+                    <li>with details <input class="create-input" type="text" id="desc" name="desc" placeholder="description"
+                        /></li>
+                    <li>due date at <input class="create-input" id="dueDate" name="dueDate" placeholder="pick date in calendar"
+                            readonly required/></li>
                 </ul>
-                <button>Create</button>
+                <p onclick="addTodo($('#title').val(), $('#desc').val(), $('#dueDate').val(), false)">Create</p>
             </form>
             <div class="error-message"></div>
             <div>
@@ -30,10 +34,11 @@
             </div>
         </div>
 
-    <ul class="todo-list"></ul>
+        <ul class="todo-list"></ul>
 
     </div>
     <div id="calendar" style="visibility: visible;"></div>
     <script type="text/javascript" src="index.js"></script>
-  </body>
+</body>
+
 </html>

@@ -1,19 +1,19 @@
-::-webkit-scrollbar { 
-  display: none; 
+::-webkit-scrollbar {
+  display: none;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
-body{
+body {
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif;
-  align-items:center;
+  font-family: "Montserrat", sans-serif;
+  align-items: center;
   height: 100%;
   height: 100vh;
   min-height: 500px;
@@ -27,16 +27,16 @@ body{
 .ui-datepicker tr,
 .ui-datepicker td,
 .ui-datepicker th {
-    margin: 0;
-    padding: 0;
-    border: none;
-    border-spacing: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-spacing: 0;
 }
 
 .ui-datepicker {
-	color: #fff;
+  color: #fff;
   margin: 5% auto;
-  background: #00A8E8;
+  background: #00a8e8;
   padding: 60px 40px 80px 40px;
   display: none;
   max-width: 650px;
@@ -44,17 +44,17 @@ body{
   cursor: default;
   height: 480px;
   border-radius: 5px;
-  box-shadow: 0px 2px 6px rgba(2,2,2,0.2);
+  box-shadow: 0px 2px 6px rgba(2, 2, 2, 0.2);
   position: fixed;
   left: 50%;
   margin: 10% 0;
 }
 
 .ui-datepicker-header {
-	border-bottom: 1px solid #d6d6d6;
-	padding-bottom: .5em;
-	position: relative;
-	width: 100%;
+  border-bottom: 1px solid #d6d6d6;
+  padding-bottom: 0.5em;
+  position: relative;
+  width: 100%;
 }
 
 .ui-datepicker-title {
@@ -62,8 +62,9 @@ body{
   margin: -20px 0 20px;
 }
 
-.ui-datepicker-month, .ui-datepicker-year {
-	width: 100%;
+.ui-datepicker-month,
+.ui-datepicker-year {
+  width: 100%;
   text-align: center;
   font-weight: 800;
   font-size: 22px;
@@ -75,22 +76,22 @@ body{
 
 .ul-datepicker-prev,
 .ui-datepicker-next {
-	position: absolute;
-	cursor: pointer;
+  position: absolute;
+  cursor: pointer;
 }
 .ui-datepicker-prev {
-	left: 0;
+  left: 0;
   padding-left: 0;
   visibility: hidden;
 }
 
 .ui-datepicker-next {
-	right: 0;
+  right: 0;
   padding-right: 0;
   visibility: hidden;
 }
 .ui-datepicker-prev span:before {
-  content: '\003c';
+  content: "\003c";
   position: absolute;
   color: white;
   visibility: visible;
@@ -100,7 +101,7 @@ body{
 }
 
 .ui-datepicker-next span:before {
-  content: '\003e';
+  content: "\003e";
   position: absolute;
   color: white;
   visibility: visible;
@@ -114,30 +115,30 @@ body{
   width: 78px;
   height: 60px;
   left: 0;
-	font-weight: normal;
+  font-weight: normal;
   color: black;
 }
 
 .ui-datepicker-calendar td {
   padding: 0;
-	line-height: 2.8em;
-	text-align: center;
+  line-height: 2.8em;
+  text-align: center;
 }
 
 .ui-datepicker-calendar .ui-state-default {
-	display: block;
-	color: #fff;
-	text-decoration: none;
-	border: 1px solid transparent;
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid transparent;
 }
 
 .ui-datepicker-calendar .ui-state-active {
-	background: white;
-  color: #00A8E8;
+  background: white;
+  color: #00a8e8;
 }
 
 .ui-datepicker-other-month .ui-state-default {
-  color: #00A8E8;
+  color: #00a8e8;
 }
 
 .event-card {
@@ -147,19 +148,18 @@ body{
   top: 0;
   left: 0;
   background-color: #fff;
-  color: #00A8E8;
+  color: #00a8e8;
 }
 
 /*      Todo      */
 
 .todo-task {
-  background-color: #00A8E8;
+  background-color: #00a8e8;
   color: #fff;
   cursor: pointer;
   list-style: none;
   margin: 7px 20px 5px;
-  border-radius:  20px;
-  
+  border-radius: 20px;
 }
 #app-container {
   width: 25%;
@@ -171,33 +171,34 @@ body{
 }
 
 h1 {
-font-size: 30px;
-font-weight: 300;
-text-align: center;
+  font-size: 30px;
+  font-weight: 300;
+  text-align: center;
 }
 
 #create-form {
-margin-top: 50px;
+  margin-top: 50px;
 }
 
 #create-form input {
-padding: 4px 5px;
-border: 1px solid #eee;
-outline: none;
+  padding: 4px 5px;
+  border: 1px solid #eee;
+  outline: none;
 }
 
 #create-form input:focus {
-border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
-.intitle, .indesc, .indate {
-padding: 5px 20px;
-} 
-
+.intitle,
+.indesc,
+.indate {
+  padding: 5px 20px;
+}
 
 .is-completed {
-  text-decoration: line-through #00A8E8;
-  color: dimgray
+  text-decoration: line-through #00a8e8;
+  color: dimgray;
 }
 
 .save-button {
@@ -205,25 +206,28 @@ padding: 5px 20px;
 }
 
 .create-input {
-width: 200px;
-height: 35px;
-margin-left: 5px
+  width: 200px;
+  height: 35px;
+  margin-left: 5px;
 }
 
-
-#create-form button {
-background: #00A8E8 !important;
-border-radius: 0 !important;
-border: 0 !important;
-padding: 10px;
-outline: none;
-margin: 5% 0 0 75%;
+#create-form p {
+  background: #00a8e8 !important;
+  border-radius: 10px;
+  border: 0 !important;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  outline: none;
+  margin: 5% 5% 5% 73%;
+  cursor: pointer;
+  box-shadow: 2px 2px 2px#00A8E8;
 }
 
 #create-form button:hover {
-background: rgba(0,168,232,0.7) !important;
-cursor: pointer;
-transition: .1s ease;
+  background: rgba(0, 168, 232, 0.7) !important;
+  cursor: pointer;
+  transition: 0.1s ease;
 }
 
 .cancel-button {
@@ -231,7 +235,7 @@ transition: .1s ease;
 }
 
 #create-form input.create-input {
-margin-bottom: 2px;
+  margin-bottom: 2px;
 }
 
 .error-message {
@@ -247,57 +251,57 @@ margin-bottom: 2px;
 }
 
 .buttons {
-margin: 0 4% 4% 0;
-float: right;
+  margin: 0 4% 4% 0;
+  float: right;
 }
 
 .edit-button {
-background: white;
-color: #00A8E8;
-padding: 5px 10px;
-border: 0;
-cursor: pointer;
+  background: white;
+  color: #00a8e8;
+  padding: 5px 10px;
+  border: 0;
+  cursor: pointer;
 }
 .edit-button:hover {
-background: rgba(56,126,245,0.9);
-color: white;
-transition: .1s ease;
+  background: rgba(56, 126, 245, 0.9);
+  color: white;
+  transition: 0.1s ease;
 }
 
 .save-button {
-background: white;
-color: #00A8E8;
-padding: 5px 10px;
-margin-left: 30px;
-border: 0;
-cursor: pointer;
+  background: white;
+  color: #00a8e8;
+  padding: 5px 10px;
+  margin-left: 30px;
+  border: 0;
+  cursor: pointer;
 }
 
 .cancel-button {
-background: #7C7B83;
-border: 0;
-padding: 5px 10px;
-color: white
+  background: #7c7b83;
+  border: 0;
+  padding: 5px 10px;
+  color: white;
 }
 
 .delete-button {
-background: #F53D3D;
-color: white;
-padding: 5px 10px;
-cursor: pointer;
-border: 0;
+  background: #f53d3d;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+  border: 0;
 }
 .delete-button:hover {
-background: rgba(245,61,61,0.9);
-transition: .1s ease;
+  background: rgba(245, 61, 61, 0.9);
+  transition: 0.1s ease;
 }
 
 table tr th:nth-child(2) {
-padding-left: 20px;
+  padding-left: 20px;
 }
 
 .edit-button {
-margin-left: 30px;
+  margin-left: 30px;
 }
 
 .desc {
@@ -313,11 +317,15 @@ margin-left: 30px;
 }
 
 .edit-input {
-  background: #00A8E8;
+  background: #00a8e8;
   color: black;
   padding: 5px 0;
   border-top: none;
   border-right: none;
   border-left: none;
   border-bottom: 1px solid white;
+}
+
+.form-open {
+  padding: 10px 0 20px 20px;
 }
