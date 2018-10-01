@@ -1,10 +1,12 @@
 const express = require('express'),
       router = express.Router(),
-      { create, show, update } = require('../controller/todos');
+      { register, login, update } = require('../controller/users');
 
 router
-    .post('/register',create)
-    .post('/login',show)
+    .post('/register',register)
+
+    .post('/login',login)
+
     .post('/update',update)
 
 module.exports = router;

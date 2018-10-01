@@ -7,13 +7,19 @@ const todoScheme = new Schema({
         required: true
     },
     description:  String,
-    eventDate: Date,
+    endDate: {
+        type: Date
+    },
     status: {
         type: Boolean,
         default: false
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, {
-    timestamps: true
+    timestamps: false
 });
 
 const Todo = mongoose.model('Todo', todoScheme)

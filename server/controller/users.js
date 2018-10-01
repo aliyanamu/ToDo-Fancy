@@ -1,25 +1,42 @@
-require('dotenv').config();
+require('dotenv').config()
+let hashPass = require("../helpers/hashPass")
 
 const User = require('../models/users'),
-      request = require('request'),
-      accessToken = process.env.GoogleCal;
+      jwt = require('jsonwebtoken')
 
 module.exports = {
     echo: (req, res) => {
         console.log ('connected to index')
     },
     
-    create: (req, res) => {
+    register: (req, res) => {
+        console.log('masuk controllers/users -> login')
         User.create({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
-            phone: req.body.phone
+            password: req.body.password
         })
         .then(user => {
-            res.status(201).json({
-                message: `Success create user ${req.body.name}`,
-                user: user
+            User.findOne({
+                email: req.body.email,
+                password: hashPass(req.body.password)
+              })
+            .then(user => {
+                jwt.sign({
+                id: user._id
+                }, process.env.ACCESS_KEY,
+                function (err, token) {
+                    res.status(200).json({
+                    name: user.name,
+                    token: token
+                    })
+                }
+                )
+            })
+            .catch(err => {
+                res.status(500).json({
+                message: `email and password didn't match`
+                })
             })
         })
         .catch(err => {
@@ -29,20 +46,28 @@ module.exports = {
         })
     },
 
-    show: (req, res) => {
-        console.log(req.body)
+    login: (req, res) => {
+        console.log('masuk controllers/users -> login')
+        let user = req.user
         User.findOne({
-            email: req.body.email,
-            password: req.body.password
+          email: req.body.email,
+          password: hashPass(req.body.password)
         })
         .then(user => {
-            res.status(200).json({
-                user: user
-            })
+            jwt.sign({
+                id: user._id
+            }, process.env.ACCESS_KEY,
+                function (err, token) {
+                res.status(200).json({
+                    name: user.name,
+                    token: token
+                })
+                }
+            )
         })
         .catch(err => {
             res.status(500).json({
-                message: err.message
+                message: `wrong email or password`
             })
         })
     },
@@ -51,8 +76,7 @@ module.exports = {
         User.updateOne({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
-            phone: req.body.phone
+            password: req.body.password
         }, {
             where : {
                 id: req.params.id
@@ -69,24 +93,5 @@ module.exports = {
                 message: err.message
             })
         })
-    },
-
-    remove: (req, res) => {
-        User.deleteOne({
-            where : {
-                id: req.params.id
-            }
-        })
-        .then(() => {
-            res.status(200).json({
-                message: 'Delete data success'
-            })
-        })
-        .catch(err => {
-            res.status(500).json({
-                message: err.message
-            })
-        })
     }
-
 }

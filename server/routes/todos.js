@@ -1,16 +1,17 @@
 const express = require("express"),
   router = express.Router(),
+  { isLogin } = require("../middlewares/auth"),
   { create, show, update, remove, complete } = require("../controller/todos");
 
 router
-  .get("/list", show)
+  .get("/list", isLogin, show)
 
-  .post("/list", create)
+  .post("/list", isLogin, create)
 
-  .put("/list", complete)
+  .put("/list", isLogin, complete)
 
-  .put("/:id", update)
+  .put("/:docktitle", isLogin, update)
 
-  .delete("/:id", remove);
+  .delete("/:docktitle", isLogin, remove);
 
 module.exports = router;

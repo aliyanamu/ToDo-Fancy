@@ -14,10 +14,14 @@ body {
   padding: 0;
   font-family: "Montserrat", sans-serif;
   align-items: center;
-  height: 100%;
+  /* height: 100%; */
   height: 100vh;
   min-height: 500px;
   background: #f2f2f2;
+}
+
+#home {
+  padding-top: 2%
 }
 
 /*      Calendar      */
@@ -35,19 +39,16 @@ body {
 
 .ui-datepicker {
   color: #fff;
-  margin: 5% auto;
-  background: #00a8e8;
+  margin: 0 auto;
+  background: lightsalmon;
   padding: 60px 40px 80px 40px;
   display: none;
-  max-width: 650px;
-  width: 100%;
+  max-width: 615px;
+  min-width: 400px;
   cursor: default;
-  height: 480px;
+  height: 465px;
   border-radius: 5px;
   box-shadow: 0px 2px 6px rgba(2, 2, 2, 0.2);
-  position: fixed;
-  left: 50%;
-  margin: 10% 0;
 }
 
 .ui-datepicker-header {
@@ -74,7 +75,7 @@ body {
   justify-content: space-around;
 }
 
-.ul-datepicker-prev,
+.ui-datepicker-prev,
 .ui-datepicker-next {
   position: absolute;
   cursor: pointer;
@@ -93,6 +94,7 @@ body {
 .ui-datepicker-prev span:before {
   content: "\003c";
   position: absolute;
+  left: 5px;
   color: white;
   visibility: visible;
   font-weight: bold;
@@ -134,11 +136,11 @@ body {
 
 .ui-datepicker-calendar .ui-state-active {
   background: white;
-  color: #00a8e8;
+  color: lightsalmon;
 }
 
 .ui-datepicker-other-month .ui-state-default {
-  color: #00a8e8;
+  color: lightsalmon;
 }
 
 .event-card {
@@ -148,26 +150,37 @@ body {
   top: 0;
   left: 0;
   background-color: #fff;
-  color: #00a8e8;
+  color: lightsalmon;
 }
 
 /*      Todo      */
 
-.todo-task {
-  background-color: #00a8e8;
+.plustask {
+  background-color: lightsalmon;
+  position: fixed;
+  top: 12%;
+  left: 3%
+}
+
+.todo-task, .weather {
+  background-color: lightsalmon;
   color: #fff;
   cursor: pointer;
   list-style: none;
-  margin: 7px 20px 5px;
-  border-radius: 20px;
+  margin: 7px auto 5px;
+  max-width: 615px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 6px rgba(2, 2, 2, 0.2);
 }
-#app-container {
-  width: 25%;
-  margin: 10% 0 0 5%;
-  padding: 5% 0;
-  position: absolute;
-  background: white;
-  border-radius: 30px;
+
+.weather {
+  height: 100px
+}
+
+#wicon {
+  font-size: 45px;
+  line-height: 2.4;
+  margin: 0 5%;
 }
 
 h1 {
@@ -180,13 +193,14 @@ h1 {
   margin-top: 50px;
 }
 
-#create-form input {
+#create-form input, #create-form textarea {
   padding: 4px 5px;
+  font-size: 16px;
   border: 1px solid #eee;
   outline: none;
 }
 
-#create-form input:focus {
+#create-form input:focus, #create-form textarea:focus {
   border: 1px solid #ccc;
 }
 
@@ -197,7 +211,7 @@ h1 {
 }
 
 .is-completed {
-  text-decoration: line-through #00a8e8;
+  text-decoration: line-through lightsalmon;
   color: dimgray;
 }
 
@@ -211,8 +225,14 @@ h1 {
   margin-left: 5px;
 }
 
+#create-form li {
+  display: flex;
+  align-items: center;
+  margin: 10px 0 10px 15%;
+}
+
 #create-form p {
-  background: #00a8e8 !important;
+  background: lightsalmon !important;
   border-radius: 10px;
   border: 0 !important;
   padding: 10px;
@@ -221,11 +241,11 @@ h1 {
   outline: none;
   margin: 5% 5% 5% 73%;
   cursor: pointer;
-  box-shadow: 2px 2px 2px#00A8E8;
+  box-shadow: 2px 2px 2px lightsalmon;
 }
 
 #create-form button:hover {
-  background: rgba(0, 168, 232, 0.7) !important;
+  background: rgba(255, 160, 122, 0.7) !important;
   cursor: pointer;
   transition: 0.1s ease;
 }
@@ -257,20 +277,21 @@ h1 {
 
 .edit-button {
   background: white;
-  color: #00a8e8;
+  color: lightsalmon;
   padding: 5px 10px;
   border: 0;
   cursor: pointer;
+  margin-left: 30px;
 }
-.edit-button:hover {
-  background: rgba(56, 126, 245, 0.9);
+.edit-button:hover, .save-button:hover {
+  background: rgba(245, 61, 61, 0.4);
   color: white;
   transition: 0.1s ease;
 }
 
 .save-button {
   background: white;
-  color: #00a8e8;
+  color: lightsalmon;
   padding: 5px 10px;
   margin-left: 30px;
   border: 0;
@@ -288,20 +309,16 @@ h1 {
   background: #f53d3d;
   color: white;
   padding: 5px 10px;
-  cursor: pointer;
   border: 0;
 }
 .delete-button:hover {
   background: rgba(245, 61, 61, 0.9);
   transition: 0.1s ease;
+  cursor: pointer;
 }
 
 table tr th:nth-child(2) {
   padding-left: 20px;
-}
-
-.edit-button {
-  margin-left: 30px;
 }
 
 .desc {
@@ -317,7 +334,8 @@ table tr th:nth-child(2) {
 }
 
 .edit-input {
-  background: #00a8e8;
+  background: lightsalmon;
+  width: 90%;
   color: black;
   padding: 5px 0;
   border-top: none;
@@ -328,4 +346,34 @@ table tr th:nth-child(2) {
 
 .form-open {
   padding: 10px 0 20px 20px;
+}
+
+.ui-dialog.ui-widget {
+  width: 273px;
+  top: 483.5px;
+  left: 477px;
+  padding: 20px;
+  background: orangered;
+  border-radius: 30px;
+}
+
+.ui-widget-header {
+  width: 100%;
+  text-align: center
+}
+
+.ui-dialog-titlebar-close {
+  float: right;
+  border: none;
+  cursor: pointer;
+}
+
+#popup-form {
+  position: fixed;
+  background: #fff;
+  width: 400px;
+  height: 330px;
+  left: 3%;
+  top: 20%;
+  border-radius: 5px;
 }

@@ -8,37 +8,99 @@
     <link href='https://fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="login.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="https://erikflowers.github.io/weather-icons/css/weather-icons.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <title>Todo List v1</title>
 </head>
 
 <body>
-    <div id="wrapper">
-
-        <div id="app-container">
-            <h1>jQuery ToDo App</h1>
+    <button id="logOut" class="logout" name="logout">Log Out</button>
+    <div id="entrance">
+        <div id="back">
+            <div class="backRight"></div>
+            <div class="backLeft"></div>
+        </div>
+    
+        <div id="slideBox">
+            <div class="topLayer">
+            <div class="left">
+                <div class="content">
+                <h2>Sign Up</h2>
+                <form id="form-signup" method="post" onsubmit="return false;">
+                    <div class="form-element form-stack">
+                    <label for="email-signup" class="form-label">Email</label>
+                    <input id="email-signup" type="email" name="email">
+                    </div>
+                    <div class="form-element form-stack">
+                    <label for="username-signup" class="form-label">Username</label>
+                    <input id="username-signup" type="text" name="username">
+                    </div>
+                    <div class="form-element form-stack">
+                    <label for="password-signup" class="form-label">Password</label>
+                    <input id="password-signup" type="password" name="password">
+                    </div>
+                    <div class="form-element form-submit">
+                    <button id="signUp" class="signup" type="submit" name="signup">Sign up</button>
+                    <button id="goLeft" class="signup off">Log In</button> 
+                    </div>
+                </form>
+                </div>
+            </div>
+            <div class="right">
+                <div class="content">
+                <h2>Login</h2>
+                <form id="form-login" method="post" onsubmit="return false;">
+                    <div class="form-element form-stack">
+                    <label for="email-login" class="form-label">Email</label>
+                    <input id="email-login" type="text" name="email">
+                    </div>
+                    <div class="form-element form-stack">
+                    <label for="password-login" class="form-label">Password</label>
+                    <input id="password-login" type="password" name="password">
+                    </div>
+                    <div class="form-element form-submit">
+                    <button id="logIn" class="login" type="submit" name="login">Log In</button>
+                    <button id="goRight" class="login off" name="signup">Sign Up</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div id="home">
+        <div class="weather">
+            <i id="temp"></i>
+            <i id="wicon"></i>
+        </div>
+        <div id="calendar" style="visibility: visible;"></div>
+        <button id="plusTask" class="plustask" name="plustask">+++ Task</button>
+        <div id="popup-form">
             <form id="create-form">
                 <ul style="list-style: none; text-align: center;">
                     <li>I need to do <input class="create-input" type="text" id="title" name="title" placeholder="task" /></li>
-                    <li>with details <input class="create-input" type="text" id="desc" name="desc" placeholder="description"
-                        /></li>
+                    <li>with details <textarea class="create-input" type="text" id="desc" name="desc" placeholder="description"
+                        ></textarea></li>
                     <li>due date at <input class="create-input" id="dueDate" name="dueDate" placeholder="pick date in calendar"
                             readonly required/></li>
                 </ul>
                 <p onclick="addTodo($('#title').val(), $('#desc').val(), $('#dueDate').val(), false)">Create</p>
             </form>
             <div class="error-message"></div>
-            <div>
+        </div>
+        <div id="wrapper">
+            <div id="app-container">
                 <ul id="todos-list"></ul>
             </div>
         </div>
-
-        <ul class="todo-list"></ul>
-
     </div>
-    <div id="calendar" style="visibility: visible;"></div>
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js"></script>
     <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="login.js"></script>
+    <script type="text/javascript" src="location.js"></script>
 </body>
 
 </html>

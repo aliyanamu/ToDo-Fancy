@@ -1,78 +1,147 @@
-let dueDateStr;
+alertify.defaults = {
+  // dialogs defaults
+  autoReset:true,
+  basic:false,
+  closable:true,
+  closableByDimmer:true,
+  frameless:false,
+  maintainFocus:true, // <== global default not per instance, applies to all dialogs
+  maximizable:true,
+  modal:true,
+  movable:true,
+  moveBounded:false,
+  overflow:true,
+  padding: true,
+  pinnable:true,
+  pinned:true,
+  preventBodyShift:false, // <== global default not per instance, applies to all dialogs
+  resizable:true,
+  startMaximized:false,
+  transition:'pulse',
 
-$("#calendar").datepicker({
+  // notifier defaults
+  notifier:{
+      // auto-dismiss wait time (in seconds)  
+      delay:5,
+      // default position
+      position:'bottom-right',
+      // adds a close button to notifier messages
+      closeButton: false
+  },
+
+  // language resources 
+  glossary:{
+      // dialogs default title
+      title:'Error',
+      // ok button text
+      ok: 'OK',
+      // cancel button text
+      cancel: 'Cancel'            
+  },
+
+  // theme settings
+  theme:{
+      // class name attached to prompt dialog input textbox.
+      input:'ajs-input',
+      // class name attached to ok button
+      ok:'ajs-ok',
+      // class name attached to cancel button 
+      cancel:'ajs-cancel'
+  }
+}
+
+let token = localStorage.getItem('token')
+let dueDateStr
+$('#popup-form').hide()
+$('#plusTask').click(function() {
+  $('#popup-form').show()
+})
+
+$('#calendar').datepicker({
   inline: true,
   firstDay: 1,
   showOtherMonths: true,
   minDate: 0,
-  dayNamesMin: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  dateFormat: "yy-mm-dd",
+  dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  dateFormat: 'yy-mm-dd',
   inline: true,
   onSelect: function(dateText, inst) {
-    let date = $(this).datepicker("getDate"),
+    let date = $(this).datepicker('getDate'),
       day = date.getDate(),
       month = date.getMonth() + 1,
-      year = date.getFullYear();
-    dueDateStr = day + "-" + month + "-" + year;
-    $("#dueDate").val(day + "-" + month + "-" + year);
-    $(".edit-input-date").val(dueDateStr);
+      year = date.getFullYear()
+    dueDateStr = day + '-' + month + '-' + year
+    $('#dueDate').val(day + '-' + month + '-' + year)
+    $('.form-open .edit-input-date').val(dueDateStr)
 
-    console.log(day + "-" + month + "-" + year);
+    console.log(day + '-' + month + '-' + year)
   }
-});
-
-let nowdate = new Date();
-let day = nowdate.getDate(),
-  month = nowdate.getMonth() + 1,
-  year = nowdate.getFullYear();
-dueDateStr = day + "-" + month + "-" + year;
-
-$("#dueDate").val(dueDateStr);
-
-let todos = []; //This is your global array of TODOS
-
-$.ajax({
-  type: "GET",
-  url: "http://localhost:3000/api/todos/list",
-  dataType: "json"
 })
-  .done(function(result) {
-    let todobj = {};
-    result.todo.forEach(item => {
-      (todobj.task = item.title),
-        (todobj.desc = item.description),
-        (todobj.date = item.date),
-        (todobj.isCompleted = item.status);
-      todos.push(todobj);
-      todobj = {};
-    });
 
-    showTodos(todos);
+let nowdate = new Date()
+let nday = nowdate.getDate(),
+  nmonth = nowdate.getMonth() + 1,
+  nyear = nowdate.getFullYear()
+
+$("#dueDate").val(nday + "-" + nmonth + "-" + nyear)
+
+let todos = [] //This is your global array of TODOS
+
+if (token) {
+  $.ajax({
+    type: "GET",
+    url: "http://localhost:3000/api/todos/list",
+    headers: {
+      token: localStorage.getItem('token')
+    },
+    dataType: "json"
   })
-  .fail(function(result, textStatus, xhr) {
-    alert(`error: ${result.status}
-    STATUS: ${xhr}`);
-  });
+    .done(function(result) {
+      let todobj = {}
+      result.todo.forEach(item => {
+        (todobj.task = item.title),
+          (todobj.desc = item.description),
+          (todobj.date = item.endDate),
+          (todobj.isCompleted = item.status)
+        todos.push(todobj)
+        todobj = {}
+      })
+  
+      showTodos(todos)
+    })
+    .fail(function(err) {
+      alertify.alert(err.responseJSON.message)
+    })
+}
 
 function showTodos(todos) {
-  var todosListEl = $("#todos-list");
+  var todosListEl = $("#todos-list")
 
-  todosListEl.html("");
+  todosListEl.html("")
 
-  let index = 0;
+  let index = 0
   todos.forEach(function(todo) {
-    var taskClasses = "todo-task" + (todo.isCompleted ? " is-completed" : "");
+    var taskClasses = "todo-task" + (todo.isCompleted ? " is-completed" : "")
+
+    let fulldate = String(todo.date).substr(0, 10),
+      date = fulldate.split("-"),
+      monIn = Number(date[1]),
+      monNamesMin= ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Agst", "Sep", "Oct", "Nov", "Dec" ]
+
+    let ddmmyy = Number(date[2]) + " " + monNamesMin[monIn - 1] + " " + Number(date[0])
+    dueDateStr = ddmmyy
 
     todosListEl.append(`
         <li class="${taskClasses}" style="overflow:hidden; word-wrap: break-word; padding: 5px" value="${todo.isCompleted}">
             <div class="form-${index}"></div>
+            <div class="delete-box"></div>
             <div class="intitle task-${index} ${todo.task}" onclick="toggleTodo('${todo.task}',${todo.isCompleted})"><p>${todo.task}</p></div>
             <div class="indesc desc-${index} ${todo.desc}" onclick="toggleTodo('${todo.task}',${todo.isCompleted})"><p>${todo.desc}</p></div>
             <div class="indate date-${index} ${todo.date}" onclick="toggleTodo('${todo.task}',${todo.isCompleted})">${dueDateStr}</div>
             <div class="buttons buttons-${index}" >
                 <button class="edit-button" onclick="enterEditMode('${index}','${todo.task}', '${todo.desc}', '${todo.date}')"><i class="fa fa-edit"></i></button>
-                <button class="delete-button"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                <button class="save-button"><i class="fa fa-save"></i></button>
+                <button class="delete-button" onclick="deleteTask('${index}','${todo.task}')"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                <button class="save-button save-button-${index}"><i class="fa fa-save"></i></button>
                 <button class="cancel-button" onclick="exitEditMode('${index}','${todo.task}', '${todo.desc}', '${todo.date}')"><i class="fa fa-times"></i></button>
             </div>
         </li>
@@ -97,24 +166,31 @@ function addTodo(title, desc, dueDate, isCompleted) {
     return;
   }
 
+  let postToDate = dueDate.split("-"),
+    postdmy = `${postToDate[2]}-${postToDate[1]}-${Number(postToDate[0])+1}`,
+    duePostdmy = new Date(postdmy);
+
   $.ajax({
     method: "POST",
-    url: "http://localhost:3000/api/todos/list",
+    url: `http://localhost:3000/api/todos/list`,
+    headers: {
+      token: localStorage.getItem('token')
+    },
     data: {
       title: title,
       desc: desc,
-      date: dueDate,
+      date: duePostdmy,
       isCompleted: isCompleted
     },
     dataType: "json"
   })
     .done(function(data) {
       if (data) window.location.reload();
-      else alert("Sorry, your connection to database is interrupted");
+      else alertify.alert("Sorry, your connection to database is interrupted");
     })
     .fail(err => {
       console.log(err, "masuk");
-      alert(err.message);
+      alertify.alert(err.message);
     });
 }
 
@@ -130,6 +206,9 @@ function toggleTodo(title, isCompleted) {
   $.ajax({
     method: "PUT",
     url: `http://localhost:3000/api/todos/list`,
+    headers: {
+      token: localStorage.getItem('token')
+    },
     data: {
       title: title,
       isCompleted: !isCompleted
@@ -138,11 +217,11 @@ function toggleTodo(title, isCompleted) {
   })
     .done(function(data) {
       if (data) window.location.reload();
-      else alert("Sorry, your connection to database is interrupted");
+      else alertify.alert("Sorry, your connection to database is interrupted");
     })
     .fail(err => {
       console.log(err, "masuk");
-      alert(err.message);
+      alertify.alert(err.message);
     });
 }
 
@@ -158,13 +237,34 @@ function enterEditMode(index, title, desc, date) {
   $(`.desc-${index}`).hide();
   $(`.date-${index}`).hide();
 
+  let fulldate = String(date).substr(0, 10),
+    pendate = fulldate.split("-"),
+    ddmmyy = Number(pendate[2]) + "-" + Number(pendate[1]) + "-" + Number(pendate[0]);
+  dueDateStr = ddmmyy;
+
   $(`.form-${index}`).addClass("form-open")
     .append(`<input type="text" name="title" class="edit-input edit-input-title" value="${title}" />
     <input type="text" name="desc" class="edit-input edit-input-desc" value="${desc}" />
-    <input type="text" name="date" class="edit-input edit-input-date" value="${date}" readonly/>`);
+    <input type="text" name="date" class="edit-input edit-input-date" value="${dueDateStr}" readonly/>`);
+
+  console.log(
+    ` '${$(".edit-input-title").val()}', '${$(".edit-input-desc").val()}', '${$(
+      ".edit-input-date"
+    ).val()}' `
+  );
+
+  $(".save-button").click(function() {
+    $(".save-button").trigger(
+      saveTask(
+        `${title}, ${$(".edit-input-title").val()}, ${$(
+          ".edit-input-desc"
+        ).val()}, ${$(".edit-input-date").val()}`
+      )
+    );
+  });
 }
 
-function exitEditMode(index, title, desc, date) {
+function exitEditMode(index) {
   console.log("exit edit");
 
   $(`.buttons-${index} .save-button`).hide();
@@ -181,67 +281,79 @@ function exitEditMode(index, title, desc, date) {
     .remove();
 }
 
-// $(function () {
+function saveTask(data) {
+  data = data.split(", ");
+  let oldtitle = data[0],
+    title = data[1],
+    desc = data[2],
+    spdate = data[3].split("-");
 
-//       saveTask: function() {
-//           var newTitle = $('.edit-input-title').val();
-//           var newDesc = $('.edit-input-desc').val();
-//           var newDate = $('.edit-input-date').val();
+  let month = Number(spdate[1])
+  let monNamesMin= ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Agst", "Sep", "Oct", "Nov", "Dec" ];
+  let datesp = `${Number(spdate[0])+1}-${monNamesMin[month-1]}-${Number(spdate[2])}`;
 
-//           todos.forEach(function(todo) {
-//               if (app.curTitle === todo.task) {
-//                   todo.task = newTitle;
-//                   todo.desc = newDesc;
-//                   todo.date = newDate;
-//               }
-//           });
-//           app.curTitle = newTitle;
-//           app.curDesc = newDesc;
-//           app.curDate = newDate;
-//           app.exitEditMode.call(this);
-//       },
+  let nuDate = new Date(datesp)
 
-//       deleteTask: function() {
-//           var taskToDelete = $(this).parent('div').prev().prev().prev().closest("div").text();
-//           var classToDelete = $(this).parents('li')
-//           console.log(classToDelete)
-//           var found = false;
-//           let index = 0
-//           todos.forEach(function(todo, index) {
-//               if (!found && taskToDelete === todo.task) {
-//                   todos.splice(index, 1);
-//                   classToDelete.remove()
-//                   found = true;
-//                 }
-//                 index++
-//             });
-//           app.showTodos();
-//         //   window.location.reload()
-//       },
+  $.ajax({
+    method: "PUT",
+    url: `http://localhost:3000/api/todos/${oldtitle}`,
+    headers: {
+          token: localStorage.getItem('token')
+        },
+    headers: {
+      token: localStorage.getItem('token')
+    },
+    data: {
+      title: title,
+      desc: desc,
+      date: nuDate.toISOString()
+    }
+  })
+    .done(function(data) {
+      if (data) window.location.reload();
+      else alertify.alert("Sorry, your connection to database is interrupted");
+    })
+    .fail(err => {
+      alertify.alert("Sorry, your connection to database is interrupted");
+    });
+}
 
-//       showError: function(errorMessage) {
-//           $('.error-message').html(errorMessage).slideDown();
-//       },
+function deleteTask(index, title) {
+  $(".delete-box").dialog({
+    resizable: false,
+    modal: true,
+    title: "Are you sure?",
+    buttons: {
+      Yes: function() {
+        $(this).dialog("close");
+        callback(true);
+      },
+      No: function() {
+        $(this).dialog("close");
+        callback(false);
+      }
+    }
+  });
 
-//       clearError: function() {
-//           $('.error-message').fadeOut();
-//       }
-//   };
-
-//   $('#create-form button').css('background', 'green');
-//   $('#create-form button').css({
-//       color: 'white',
-//       borderRadius: '8px'
-//   });
-
-//   app.showTodos();
-
-//   $('#create-form').on('submit', app.addTodo);
-//   $('create-input').on('keyup', app.clearError);
-//   $('.todo-task').click(app.toggleTodo);
-//   $('.edit-button').click(app.enterEditMode);
-//   $('.cancel-button').click(app.exitEditMode);
-//   $('.save-button').click(app.saveTask);
-//   $('.delete-button').click(app.deleteTask);
-
-// })
+  function callback(value) {
+    if (value) {
+      $.ajax({
+        method: "DELETE",
+        url: `http://localhost:3000/api/todos/${title}`,
+        headers: {
+          token: localStorage.getItem('token')
+        },
+        dataType: "json"
+      })
+        .done(function(data) {
+          if (data) window.location.reload();
+          else alertify.alert("Sorry, your connection to database is interrupted");
+        })
+        .fail(err => {
+          alertify.alert("Sorry, your connection to database is interrupted");
+        });
+    } else {
+        window.location.reload();
+    }
+  }
+}
