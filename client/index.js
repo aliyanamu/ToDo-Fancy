@@ -87,7 +87,7 @@ $("#dueDate").val(nday + "-" + nmonth + "-" + nyear)
 
 let todos = [] //This is your global array of TODOS
 
-if (token) {
+function getTodos () {
   $.ajax({
     type: "GET",
     url: "http://localhost:3000/api/todos/list",
@@ -185,7 +185,7 @@ function addTodo(title, desc, dueDate, isCompleted) {
     dataType: "json"
   })
     .done(function(data) {
-      if (data) window.location.reload();
+      if (data) window.location.reload()
       else alertify.alert("Sorry, your connection to database is interrupted");
     })
     .fail(err => {
@@ -319,41 +319,25 @@ function saveTask(data) {
 }
 
 function deleteTask(index, title) {
-  $(".delete-box").dialog({
-    resizable: false,
-    modal: true,
-    title: "Are you sure?",
-    buttons: {
-      Yes: function() {
-        $(this).dialog("close");
-        callback(true);
-      },
-      No: function() {
-        $(this).dialog("close");
-        callback(false);
-      }
-    }
-  });
 
-  function callback(value) {
-    if (value) {
-      $.ajax({
-        method: "DELETE",
-        url: `http://localhost:3000/api/todos/${title}`,
-        headers: {
-          token: localStorage.getItem('token')
-        },
-        dataType: "json"
+  alertify.confirm('Delete Confirmation', 'Are you sure?', () => {
+    alertify.success('Task deleted')
+    $.ajax({
+      method: "DELETE",
+      url: `http://localhost:3000/api/todos/${title}`,
+      headers: {
+        token: localStorage.getItem('token')
+      },
+      dataType: "json"
+    })
+      .done(function(data) {
+        if (data) window.location.reload();
+        else alertify.alert("Sorry, your connection to database is interrupted");
       })
-        .done(function(data) {
-          if (data) window.location.reload();
-          else alertify.alert("Sorry, your connection to database is interrupted");
-        })
-        .fail(err => {
-          alertify.alert("Sorry, your connection to database is interrupted");
-        });
-    } else {
-        window.location.reload();
-    }
-  }
+      .fail(err => {
+        alertify.alert("Sorry, your connection to database is interrupted");
+      })
+  }, () => {
+    console.log('Cancel')
+  })
 }

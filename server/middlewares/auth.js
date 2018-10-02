@@ -58,10 +58,10 @@ module.exports = {
       })
     }
   },
-  fbAuth (req,res,next) {
+  googleAuth (req,res,next) {
     console.log('masuk middleware/googleAuth')
 		let randomPassword = PassWordGenerator.generate()
-		req.body.password = randomPassword
+    req.body.password = randomPassword
 		next()
 	}
 }

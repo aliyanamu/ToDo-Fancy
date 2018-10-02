@@ -4,6 +4,7 @@ $(document).ready(function(){
     $("#entrance").hide()
     $("#home").show()
     $('#logOut').show()
+    getTodos()
   } else {
     $("#entrance").show()
     $("#home").hide()

@@ -13,11 +13,13 @@
     <link rel="stylesheet" href="https://erikflowers.github.io/weather-icons/css/weather-icons.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="760645321620-fjpuaf8lmlv81mqn5a1efhdlvarilh0g.apps.googleusercontent.com">
     <title>Todo List v1</title>
 </head>
 
 <body>
-    <button id="logOut" class="logout" name="logout">Log Out</button>
+    <button id="logOut" class="logout" name="logout" onclick="signOut()">Log Out</button>
     <div id="entrance">
         <div id="back">
             <div class="backRight"></div>
@@ -64,6 +66,7 @@
                     <div class="form-element form-submit">
                     <button id="logIn" class="login" type="submit" name="login">Log In</button>
                     <button id="goRight" class="login off" name="signup">Sign Up</button>
+                    <div class="g-signin2" style="display: inline-flex" data-width="40" data-height="40" data-longtitle="true" data-onsuccess="onSignIn"></div>
                     </div>
                 </form>
                 </div>
@@ -100,6 +103,7 @@
     <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js"></script>
     <script type="text/javascript" src="index.js"></script>
     <script type="text/javascript" src="login.js"></script>
+    <script type="text/javascript" src="gAuth.js"></script>
     <script type="text/javascript" src="location.js"></script>
 </body>
 
