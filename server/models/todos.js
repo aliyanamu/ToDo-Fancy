@@ -4,7 +4,8 @@ const mongoose = require('mongoose'),
 const todoScheme = new Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     description:  String,
     endDate: {

@@ -12,7 +12,18 @@ All server response bodies and request bodies MUST be valid JSON Media Type mess
 ---
 ## URLs and Operations
 ---
-Below are the URLs and the operations associated with them.
+Below are the endpoints and the operations associated with them.
+---
+
+###### CRUD User
+---
+| Route | HTTP | Description | Input | Output |
+| ------ | ------ | ------ | ------ | ------ |
+| ````/api/register```` | POST | Create new user via manual register | [name], [email], [password] | User Detail
+| ````/api/login```` | POST | Login user via manual login | [email], [password] | User Detail
+| ````/api/google-signin```` | POST | Create new user or login via google | [google account] | User Detail
+| ````/api/update```` | PUT | Update a user info | [id] [updated_parameter] | User Detail
+
 ---
 
 ###### CRUD Todo

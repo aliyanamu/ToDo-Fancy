@@ -10,6 +10,6 @@ router
 
     .post('/google-signin',googleAuth, googleSignUp)
 
-    .post('/update',update)
+    .put('/update',update)
 
 module.exports = router;

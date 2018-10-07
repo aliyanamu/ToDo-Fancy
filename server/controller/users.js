@@ -73,6 +73,7 @@ module.exports = {
     },
 
     googleSignUp: (req, res) => {
+        console.log('masuk controllers/users -> googleSignIn')
         User.findOne({
           email: req.body.email
         })

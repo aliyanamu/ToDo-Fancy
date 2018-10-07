@@ -54,7 +54,7 @@ let token = localStorage.getItem('token')
 let dueDateStr
 $('#popup-form').hide()
 $('#plusTask').click(function() {
-  $('#popup-form').show()
+  $('#popup-form').toggle()
 })
 
 $('#calendar').datepicker({
@@ -83,20 +83,19 @@ let nday = nowdate.getDate(),
   nmonth = nowdate.getMonth() + 1,
   nyear = nowdate.getFullYear()
 
-$("#dueDate").val(nday + "-" + nmonth + "-" + nyear)
-
-let todos = [] //This is your global array of TODOS
+$('#dueDate').val(nday + '-' + nmonth + '-' + nyear)
 
 function getTodos () {
   $.ajax({
-    type: "GET",
-    url: "http://localhost:3000/api/todos/list",
+    type: 'GET',
+    url: 'http://localhost:3000/api/todos/list',
     headers: {
       token: localStorage.getItem('token')
     },
-    dataType: "json"
+    dataType: 'json'
   })
     .done(function(result) {
+      let todos = []
       let todobj = {}
       result.todo.forEach(item => {
         (todobj.task = item.title),
@@ -115,20 +114,20 @@ function getTodos () {
 }
 
 function showTodos(todos) {
-  var todosListEl = $("#todos-list")
+  var todosListEl = $('#todos-list')
 
-  todosListEl.html("")
+  todosListEl.empty()
 
   let index = 0
   todos.forEach(function(todo) {
-    var taskClasses = "todo-task" + (todo.isCompleted ? " is-completed" : "")
+    var taskClasses = 'todo-task' + (todo.isCompleted ? ' is-completed' : '')
 
     let fulldate = String(todo.date).substr(0, 10),
-      date = fulldate.split("-"),
+      date = fulldate.split('-'),
       monIn = Number(date[1]),
-      monNamesMin= ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Agst", "Sep", "Oct", "Nov", "Dec" ]
+      monNamesMin= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Agst', 'Sep', 'Oct', 'Nov', 'Dec' ]
 
-    let ddmmyy = Number(date[2]) + " " + monNamesMin[monIn - 1] + " " + Number(date[0])
+    let ddmmyy = Number(date[2]) + ' ' + monNamesMin[monIn - 1] + ' ' + Number(date[0])
     dueDateStr = ddmmyy
 
     todosListEl.append(`
@@ -154,24 +153,19 @@ function addTodo(title, desc, dueDate, isCompleted) {
   var errorMessage = null;
 
   if (!title || title.length === 0) {
-    errorMessage = "Task cannot be empty.";
-  } else {
-    todos.forEach(function(todo) {
-      if (todo.task === title) errorMessage = "Task already exists.";
-    });
+    errorMessage = 'Task cannot be empty.';
   }
-
   if (errorMessage) {
     showError(errorMessage);
     return;
   }
 
-  let postToDate = dueDate.split("-"),
+  let postToDate = dueDate.split('-'),
     postdmy = `${postToDate[2]}-${postToDate[1]}-${Number(postToDate[0])+1}`,
     duePostdmy = new Date(postdmy);
 
   $.ajax({
-    method: "POST",
+    method: 'POST',
     url: `http://localhost:3000/api/todos/list`,
     headers: {
       token: localStorage.getItem('token')
@@ -182,29 +176,30 @@ function addTodo(title, desc, dueDate, isCompleted) {
       date: duePostdmy,
       isCompleted: isCompleted
     },
-    dataType: "json"
+    dataType: 'json'
   })
     .done(function(data) {
-      if (data) window.location.reload()
-      else alertify.alert("Sorry, your connection to database is interrupted");
+      if (data) getTodos()
+      else alertify.alert('Sorry, your connection to database is interrupted');
     })
     .fail(err => {
-      console.log(err, "masuk");
-      alertify.alert(err.message);
-    });
+      console.log(err, 'masuk');
+      errorMessage = 'Task already exist'
+      showError(errorMessage)
+    })
 }
 
 function showError(errorMessage) {
-  $(".error-message")
+  $('.error-message')
     .html(errorMessage)
-    .slideDown();
+    .slideDown()
 }
 
 function toggleTodo(title, isCompleted) {
-  console.log(title, isCompleted);
+  console.log(title, isCompleted)
 
   $.ajax({
-    method: "PUT",
+    method: 'PUT',
     url: `http://localhost:3000/api/todos/list`,
     headers: {
       token: localStorage.getItem('token')
@@ -213,20 +208,20 @@ function toggleTodo(title, isCompleted) {
       title: title,
       isCompleted: !isCompleted
     },
-    dataType: "json"
+    dataType: 'json'
   })
     .done(function(data) {
-      if (data) window.location.reload();
-      else alertify.alert("Sorry, your connection to database is interrupted");
+      if (data) getTodos()
+      else alertify.alert('Sorry, your connection to database is interrupted')
     })
     .fail(err => {
-      console.log(err, "masuk");
-      alertify.alert(err.message);
-    });
+      console.log(err, 'masuk')
+      alertify.alert(err.message)
+    })
 }
 
 function enterEditMode(index, title, desc, date) {
-  console.log("into edit");
+  console.log('into edit')
 
   $(`.buttons-${index} .save-button`).show();
   $(`.buttons-${index} .cancel-button`).show();
@@ -238,8 +233,8 @@ function enterEditMode(index, title, desc, date) {
   $(`.date-${index}`).hide();
 
   let fulldate = String(date).substr(0, 10),
-    pendate = fulldate.split("-"),
-    ddmmyy = Number(pendate[2]) + "-" + Number(pendate[1]) + "-" + Number(pendate[0]);
+    pendate = fulldate.split('-'),
+    ddmmyy = Number(pendate[2]) + '-' + Number(pendate[1]) + '-' + Number(pendate[0]);
   dueDateStr = ddmmyy;
 
   $(`.form-${index}`).addClass("form-open")
@@ -265,7 +260,7 @@ function enterEditMode(index, title, desc, date) {
 }
 
 function exitEditMode(index) {
-  console.log("exit edit");
+  console.log('exit edit');
 
   $(`.buttons-${index} .save-button`).hide();
   $(`.buttons-${index} .cancel-button`).hide();
@@ -276,26 +271,26 @@ function exitEditMode(index) {
   $(`.desc-${index}`).show();
   $(`.date-${index}`).show();
   $(`.form-${index}`)
-    .removeClass("form-open")
+    .removeClass('form-open')
     .children()
     .remove();
 }
 
 function saveTask(data) {
-  data = data.split(", ");
+  data = data.split(', ');
   let oldtitle = data[0],
     title = data[1],
     desc = data[2],
-    spdate = data[3].split("-");
+    spdate = data[3].split('-');
 
   let month = Number(spdate[1])
-  let monNamesMin= ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Agst", "Sep", "Oct", "Nov", "Dec" ];
+  let monNamesMin= ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Agst', 'Sep', 'Oct', 'Nov', 'Dec' ];
   let datesp = `${Number(spdate[0])+1}-${monNamesMin[month-1]}-${Number(spdate[2])}`;
 
   let nuDate = new Date(datesp)
 
   $.ajax({
-    method: "PUT",
+    method: 'PUT',
     url: `http://localhost:3000/api/todos/${oldtitle}`,
     headers: {
           token: localStorage.getItem('token')
@@ -310,34 +305,39 @@ function saveTask(data) {
     }
   })
     .done(function(data) {
-      if (data) window.location.reload();
-      else alertify.alert("Sorry, your connection to database is interrupted");
+      if (data) getTodos()
+      else alertify.alert('Sorry, your connection to database is interrupted');
     })
     .fail(err => {
-      alertify.alert("Sorry, your connection to database is interrupted");
+      alertify.alert('Sorry, your connection to database is interrupted');
     });
 }
 
 function deleteTask(index, title) {
 
   alertify.confirm('Delete Confirmation', 'Are you sure?', () => {
-    alertify.success('Task deleted')
     $.ajax({
-      method: "DELETE",
+      method: 'DELETE',
       url: `http://localhost:3000/api/todos/${title}`,
       headers: {
         token: localStorage.getItem('token')
       },
-      dataType: "json"
+      dataType: 'json'
     })
       .done(function(data) {
-        if (data) window.location.reload();
-        else alertify.alert("Sorry, your connection to database is interrupted");
+        if (data) {
+          $('.delete-button').trigger(getTodos())
+        }
+        else alertify.alert('Sorry, your connection to database is interrupted');
       })
       .fail(err => {
-        alertify.alert("Sorry, your connection to database is interrupted");
+        alertify.alert('Sorry, your connection to database is interrupted');
       })
   }, () => {
     console.log('Cancel')
   })
 }
+
+$('#create-form input').keyup(function () {
+  $('.error-message').slideUp()
+})

@@ -40,27 +40,32 @@ $(document).ready(function(){
           "background": "#f9f9f9",
           "transition": "all 0.5s ease"
         })
-        $('#logOut').show()
         $('.backRight').hide()
         $('#slideBox').animate({
-          'marginLeft' : '-100%'
+          'marginLeft' : '-150%'
         }, 1000)
         $('.topLayer').animate({
-          'marginLeft' : '-200%'
+          'marginLeft' : '100%'
         }, 1000)
-        $("#home").show()
-        setTimeout(function() { window.location = window.location}, 1000)
+        setTimeout(function() { 
+          $("#home").show()
+          $('#logOut').show()
+        }, 1000)
       })
       .fail(err => {
-        let res = err.responseJSON.message, errlist = []
-        res = res.substring(24, res.length).split(',')
-        res.forEach(elem => {
-          elem = elem.split(': ')
-          errlist.push(elem[1])
-        })
+        if(err.responseJSON.message.substr(0, 37) === 'E11000 duplicate key error collection') {
+          alertify.alert('email is already exist')  
+        } else {
+          let res = err.responseJSON.message, errlist = []
+          res = res.substring(24, res.length).split(',')
+          res.forEach(elem => {
+            elem = elem.split(': ')
+            errlist.push(elem[1])
+          })
 
-        let errStr = errlist.join(', ')
-        alertify.alert(errStr.substr(0, errStr.length-1))
+          let errStr = errlist.join(', ')
+          alertify.alert(errStr.substr(0, errStr.length))
+        }
       })
   })
   $('#logIn').on('click', function(e){
@@ -91,7 +96,7 @@ $(document).ready(function(){
           'marginLeft' : '0'
         }, 1000)
         $("#home").show()
-        setTimeout(function() { window.location = window.location}, 1000)
+        getTodos ()
       })
       .fail(err => {
         console.log(err, "error login")
@@ -100,15 +105,20 @@ $(document).ready(function(){
   })
   $('#logOut').on('click', function(e){
     e.preventDefault()
+    $('.backLeft').css({
+      "width": "50%",
+      "background": "lightsalmon",
+      "transition": "all 0.5s ease"
+    }, 1000)
     $('#slideBox').animate({
       'marginLeft' : '50%'
-    }, 1000)
+    }, 500)
     $('.topLayer').animate({
       'marginLeft' : '0'
     })
     $('#logOut').hide()
     $("#home").hide()
-    setTimeout(function() { window.location = window.location; localStorage.clear()}, 1000)
+    setTimeout(function() { localStorage.clear()}, 1000)
   })
   $('#goLeft').on('click', function(){
     if (window.innerWidth > 769){
